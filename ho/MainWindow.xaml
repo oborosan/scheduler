@@ -5,17 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySchedule"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Border BorderBrush="Black" BorderThickness="1" Margin="418,201,18,21"/>
-        <Grid Margin="10,0,374,21" Height="379" VerticalAlignment="Bottom" Cursor="Pen" Focusable="True" AllowDrop="True">
-            <Grid.Effect>
-                <DropShadowEffect/>
-            </Grid.Effect>
-            <ComboBox HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Width="378" SelectionChanged="ComboBox_SelectionChanged">
-                <ComboBoxItem Content="select1&#xD;&#xA;select2&#xD;&#xA;select3&#xD;&#xA;select4" HorizontalAlignment="Left" Width="376" Selected="ComboBoxItem_Selected"/>
-            </ComboBox>
+        Title="HocchiSchedule" Height="450" Width="798.399" Background="#FF686868">
+    <Grid Margin="0,0,0,4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="388*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="10,1,10,0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="83*"/>
+                <ColumnDefinition Width="27*" MaxWidth="200" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Calendar x:Name="MyCalendar" Grid.Column="1" Margin="0,1,0,202" HorizontalAlignment="Right" Width="190"/>
+            <Button Content="予定の作成" HorizontalAlignment="Right" Height="23" Margin="0,175,10,0" VerticalAlignment="Top" Width="172" Click="Button_Click" Grid.Column="1"/>
+            <Button Content="修正" HorizontalAlignment="Right" Height="23" Margin="0,203,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
+            <Button Content="削除" HorizontalAlignment="Right" Height="23" Margin="0,344,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
         </Grid>
-
+        <Menu Margin="0,0,0,4">
+            <MenuItem Header="ファイル" Height="22.659" Width="59.57" Cursor="Arrow">
+                <MenuItem Header="開く" HorizontalAlignment="Left" Height="22.659" Width="139.507"/>
+                <MenuItem Header="終了" Height="25.293"/>
+            </MenuItem>
+            <MenuItem Header="編集" Height="22.659" Width="34.961"/>
+        </Menu>
     </Grid>
 </Window>

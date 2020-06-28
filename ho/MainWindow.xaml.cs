@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyScheduleData;
 
 namespace MySchedule
 {
@@ -27,12 +28,29 @@ namespace MySchedule
 
         private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int a = 0;
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            var d = new Schedule();
+            var calSelect = MyCalendar.SelectedDate;
+            var begin = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 9, 0, 0);
+            var end = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 15, 0, 0);
+            var window = new addSchedule(new Schedule("無題の予定", begin, end, true, "めもも"));
+            
+            
+
+
+
+            //表示！
+            window.ShowDialog();
         }
     }
 }
