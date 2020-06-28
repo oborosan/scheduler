@@ -19,10 +19,11 @@
                 <ColumnDefinition Width="83*"/>
                 <ColumnDefinition Width="27*" MaxWidth="200" MinWidth="200"/>
             </Grid.ColumnDefinitions>
-            <Calendar x:Name="MyCalendar" Grid.Column="1" Margin="0,1,0,202" HorizontalAlignment="Right" Width="190"/>
-            <Button Content="予定の作成" HorizontalAlignment="Right" Height="23" Margin="0,175,10,0" VerticalAlignment="Top" Width="172" Click="Button_Click" Grid.Column="1"/>
+            <Calendar x:Name="MyCalendar" Grid.Column="1" Margin="0,1,0,0" HorizontalAlignment="Right" Width="190" Initialized="MyCalendar_Initialized" FirstDayOfWeek="Monday" ForceCursor="True" Height="184" VerticalAlignment="Top"/>
+            <Button x:Name="btn_AddSchedule" Content="予定の作成" HorizontalAlignment="Right" Margin="0,175,10,0" Width="172" Click="Button_Click" Grid.Column="1" Height="23" VerticalAlignment="Top"/>
             <Button Content="修正" HorizontalAlignment="Right" Height="23" Margin="0,203,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
             <Button Content="削除" HorizontalAlignment="Right" Height="23" Margin="0,344,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
+            <Border BorderThickness="1" Margin="0,1,0,0" BorderBrush="White" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
         </Grid>
         <Menu Margin="0,0,0,4">
             <MenuItem Header="ファイル" Height="22.659" Width="59.57" Cursor="Arrow">

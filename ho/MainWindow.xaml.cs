@@ -21,6 +21,12 @@ namespace MySchedule
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        /// <summary>
+        /// スケジュールデータ用DB
+        /// </summary>
+        protected List<Schedule> db;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,12 +51,23 @@ namespace MySchedule
             var end = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 15, 0, 0);
             var window = new addSchedule(new Schedule("無題の予定", begin, end, true, "めもも"));
             
-            
 
 
 
             //表示！
             window.ShowDialog();
         }
+
+        /// <summary>
+        /// カレンダー初期化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MyCalendar_Initialized(object sender, EventArgs e)
+        {
+            MyCalendar.SelectedDate = DateTime.Now;
+        }
+
+
     }
 }
