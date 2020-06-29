@@ -26,8 +26,7 @@ namespace MySchedule
         /// <summary>
         /// スケジュール情報
         /// </summary>
-        protected Schedule ScheculeData;
-        
+        protected Schedule ScheculeData { get; set; }        
 
         public addSchedule(Schedule dat)
         {
@@ -38,14 +37,14 @@ namespace MySchedule
 
             //時間のコレクションを生成する
             for (int i=0; i <= 23; i++) {
-                begin_h.Items.Add(i.ToString());
-                end_h.Items.Add(i.ToString());
+                begin_h.Items.Add(i.ToString("00"));
+                end_h.Items.Add(i.ToString("00"));
             }
 
-            for (int i = 0; i <= 59; i++)
+            for (int i = 0; i <= 3; i++)
             {
-                begin_m.Items.Add(i.ToString());
-                end_m.Items.Add(i.ToString());
+                begin_m.Items.Add((i*15).ToString("00"));
+                end_m.Items.Add((i*15).ToString("00"));
             }
 
 
@@ -66,10 +65,10 @@ namespace MySchedule
 
 
             begin_h.SelectedIndex = ScheculeData.Begins.Hour;
-            begin_m.SelectedIndex = ScheculeData.Begins.Minute;
+            begin_m.SelectedIndex = ScheculeData.Begins.Minute/15;
 
             end_h.SelectedIndex = ScheculeData.Ends.Hour;
-            end_m.SelectedIndex = ScheculeData.Ends.Minute;
+            end_m.SelectedIndex = ScheculeData.Ends.Minute/15;
 
             scheMemo.Text = ScheculeData.Memo;
 
@@ -97,12 +96,12 @@ namespace MySchedule
         private void chk_allTime_Checked(object sender, RoutedEventArgs e)
         {
             //終日？
-            ScheculeData.AllTime = chk_allTime.IsChecked == null ? false: chk_allTime.IsChecked.HasValue;
-            begin_h.IsEnabled = (chk_allTime.IsChecked == true) ? false : true;
-            begin_m.IsEnabled = (chk_allTime.IsChecked == true) ? false : true;
+            ScheculeData.AllTime = chk_allTime.IsChecked != null && chk_allTime.IsChecked.HasValue;
+            begin_h.IsEnabled = chk_allTime.IsChecked != true;
+            begin_m.IsEnabled = chk_allTime.IsChecked != true;
 
-            end_h.IsEnabled = (chk_allTime.IsChecked == true) ? false : true;
-            end_m.IsEnabled = (chk_allTime.IsChecked == true) ? false : true;
+            end_h.IsEnabled = chk_allTime.IsChecked != true;
+            end_m.IsEnabled = chk_allTime.IsChecked != true;
         }
     }
 }

@@ -5,32 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySchedule"
         mc:Ignorable="d"
-        Title="HocchiSchedule" Height="450" Width="798.399" Background="#FF686868">
-    <Grid Margin="0,0,0,4">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+        Title="HocchiSchedule" Height="502.667" Width="618.899" Background="#FF686868" SizeChanged="Window_SizeChanged">
+    <Grid Margin="0,0,2,2">
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*"/>
-            <RowDefinition Height="388*"/>
+            <RowDefinition/>
+            <RowDefinition Height="193*"/>
         </Grid.RowDefinitions>
-        <Grid Margin="10,1,10,0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="83*"/>
-                <ColumnDefinition Width="27*" MaxWidth="200" MinWidth="200"/>
-            </Grid.ColumnDefinitions>
-            <Calendar x:Name="MyCalendar" Grid.Column="1" Margin="0,1,0,0" HorizontalAlignment="Right" Width="190" Initialized="MyCalendar_Initialized" FirstDayOfWeek="Monday" ForceCursor="True" Height="184" VerticalAlignment="Top"/>
-            <Button x:Name="btn_AddSchedule" Content="予定の作成" HorizontalAlignment="Right" Margin="0,175,10,0" Width="172" Click="Button_Click" Grid.Column="1" Height="23" VerticalAlignment="Top"/>
-            <Button Content="修正" HorizontalAlignment="Right" Height="23" Margin="0,203,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
-            <Button Content="削除" HorizontalAlignment="Right" Height="23" Margin="0,344,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1"/>
-            <Border BorderThickness="1" Margin="0,1,0,0" BorderBrush="White" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"/>
-        </Grid>
-        <Menu Margin="0,0,0,4">
-            <MenuItem Header="ファイル" Height="22.659" Width="59.57" Cursor="Arrow">
-                <MenuItem Header="開く" HorizontalAlignment="Left" Height="22.659" Width="139.507"/>
-                <MenuItem Header="終了" Height="25.293"/>
-            </MenuItem>
-            <MenuItem Header="編集" Height="22.659" Width="34.961"/>
-        </Menu>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="409*"/>
+            <ColumnDefinition Width="200*" MaxWidth="200" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="label_nowDate" Content="2020年 12月 31日" Margin="46,0,0,0" FontWeight="Bold" FontSize="18" FontFamily="Microsoft JhengHei" Foreground="White" HorizontalAlignment="Left" Width="156" Grid.RowSpan="2" Height="30" VerticalAlignment="Top" MouseDown="label_nowDate_MouseDown"/>
+        <Label x:Name="btn_dayBack" Content="▼" Margin="21,0,0,0" FontSize="16" RenderTransformOrigin="-0.218,0.483" Background="{x:Null}" Foreground="White" Grid.Row="1" HorizontalAlignment="Left" Width="26" Height="30" VerticalAlignment="Top" MouseDown="btn_dayBack_MouseDown">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="19.008" Y="-18.328"/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="btn_dayNext" Content="▼" Margin="201,0,0,0" FontSize="16" RenderTransformOrigin="0.5,0.5" Background="{x:Null}" Foreground="White" Grid.Row="1" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="26" MouseUp="btn_dayNext_MouseUp">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="270"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Calendar x:Name="MyCalendar" Grid.Column="1" Margin="0,8,0,0" HorizontalAlignment="Right" Width="190" Initialized="MyCalendar_Initialized" FirstDayOfWeek="Monday" ForceCursor="True" Height="176" VerticalAlignment="Top" Grid.Row="1" SelectedDatesChanged="MyCalendar_SelectedDatesChanged"/>
+        <Button x:Name="btn_AddSchedule" Content="予定の作成" HorizontalAlignment="Right" Margin="0,174,10,0" Width="172" Click="Button_Click" Grid.Column="1" Height="22" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button Content="修正" HorizontalAlignment="Right" Height="22" Margin="0,202,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1" Grid.Row="1"/>
+        <Button Content="削除" HorizontalAlignment="Right" Height="24" Margin="0,342,10,0" VerticalAlignment="Top" Width="172" Grid.Column="1" Grid.Row="1"/>
+        <DockPanel x:Name="SchedulePanel" LastChildFill="False" Background="{DynamicResource GlyphBrush}" Margin="2,33,0,0" Grid.Row="1">
+            <StackPanel x:Name="TimeHeader" Width="407" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True"/>
+        </DockPanel>
+        <Border BorderBrush="#FFF30000" BorderThickness="1" Height="56" Margin="58,100,10,0" VerticalAlignment="Top" Grid.Row="1">
+            <Label Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000"/>
+        </Border>
     </Grid>
 </Window>
