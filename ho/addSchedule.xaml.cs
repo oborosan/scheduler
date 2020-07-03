@@ -79,13 +79,16 @@ namespace MySchedule
 
         private void addSc_close_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void Button_add_Click(object sender, RoutedEventArgs e)
         {
-            
-            this.Hide();
+            MainWindow owner = (MainWindow)Owner;
+            owner.createSchecule(ScheculeData);
+
+            this.Close();
         }
 
         /// <summary>
@@ -103,5 +106,7 @@ namespace MySchedule
             end_h.IsEnabled = chk_allTime.IsChecked != true;
             end_m.IsEnabled = chk_allTime.IsChecked != true;
         }
+
+
     }
 }

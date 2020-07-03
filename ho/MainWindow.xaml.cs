@@ -27,9 +27,11 @@ namespace MySchedule
         /// <summary>
         /// スケジュールデータ用DB
         /// </summary>
-        protected List<Schedule> db;
+        protected List<Schedule> db = new List<Schedule>();
 
         protected DateTime NowSelectDay;
+
+        int ScrollOffset = 0;
 
         public MainWindow()
         {
@@ -39,7 +41,8 @@ namespace MySchedule
             initDate();
 
             //スケジュール生成
-            refleshDisp();
+            createScheduleArea();
+            refleshScheduleArea();
         }
 
         /// <summary>
@@ -56,51 +59,106 @@ namespace MySchedule
 
         }
 
-        /// <summary>
-        /// スケジュール表示更新
-        /// </summary>
-        protected void refleshDisp()
-        {
-            
-            //contents.Content = "9;00";
+        //----独自I/F-------------------------------------------------------------------------
 
-            for (int i = 0; i < 24*4; i++)
+        /// <summary>
+        /// スケジュール表示初期生成
+        /// </summary>
+        protected void createScheduleArea()
+        {
+            ScrollOffset = (int)PanelScroll.Value;
+
+            for (int i = ScrollOffset; i < 24 * 4; i++)
             {
                 //スケジュール枠の更新
                 var contents = new System.Windows.Controls.Label();
+                contents.Foreground = Brushes.WhiteSmoke;
 
-                //contents.Name = $"{i / 4:0}:{i % 4:00}";
-                
                 contents.Height = 40;
                 contents.Background = null;
-                if (i % 4 == 0)
+
+                TimeHeader.Children.Add(contents);
+            }
+            //contents.Name = $"{i / 4:0}:{i % 4:00}";
+
+
+        }
+
+        /// <summary>
+        /// スケジュール表示更新
+        /// </summary>
+        protected void refleshScheduleArea()
+        {
+            int offset = ScrollOffset;
+            foreach (System.Windows.Controls.Label contents in TimeHeader.Children)
+            {
+
+                if (offset > 24 * 4)
                 {
-                    contents.Content = $"{i/4:0}:{i%4:00}";
-                    
+                    contents.Content = "";
+                    continue;
+                }
+
+                if ((offset % 4 == 0) || (contents == TimeHeader.Children[0]))
+                {
+                    contents.Content = $"{offset / 4:00}:{(offset % 4)*15:00}";
+                    contents.FontWeight = FontWeights.Bold;//太字
+
                 }
                 else
                 {
-                    contents.Content = $"   {(i % 4)*15:00}";
+                    contents.Content = $"    {(offset % 4) * 15:00}";
+                    contents.FontWeight = FontWeights.Normal;
                 }
-                
-                contents.Foreground = Brushes.WhiteSmoke;
-                TimeHeader.Children.Add(contents);
+
+                offset++;
+
+
             }
+
+            //お試しで、スケジュール１つ表示してみる
+            System.Windows.Controls.Label scheParts = new System.Windows.Controls.Label();
+            scheParts.Content = "●●の予定";
+            scheParts.Height = 100;
+            scheParts.Width = 200;
+            scheParts.Visibility = Visibility.Visible;
+            scheParts.Name = "CustomPanel";
+
 
         }
 
 
-        //予定追加
+        /// <summary>
+        /// 予定の生成(addScheduleダイアログからコールされるはず)
+        /// </summary>
+        /// <param name="schedule"></param>
+        public void createSchecule(Schedule schedule)
+        {
+            db.Add(schedule);
+        }
+
+
+        //----ボタン関連-------------------------------------------------------------------------
+
+        /// <summary>
+        /// 予定追加ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var calSelect = MyCalendar.SelectedDate;
             var begin = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 9, 15, 0);
             var end = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 15, 30, 0);
             var window = new addSchedule(new Schedule("無題の予定", begin, end, false, "めもも"));
+            window.Owner = this; //オーナーを設定してやることで、戻り値を受ける
 
             //表示！
             window.ShowDialog();
         }
+
+
+        //----カレンダー関連-------------------------------------------------------------------------
 
         /// <summary>
         /// カレンダー初期化・更新
@@ -132,8 +190,6 @@ namespace MySchedule
             initDate(MyCalendar.SelectedDate);
         }
 
-
-
         /// <summary>
         /// カレンダーコントロールがフォーカスを離さない問題を回避する
         /// </summary>
@@ -147,6 +203,9 @@ namespace MySchedule
             }
         }
 
+
+        //----その他------------------------------------------------------------------------------------
+
         /// <summary>
         /// 画面の表示サイズが変わった時
         /// </summary>
@@ -155,6 +214,13 @@ namespace MySchedule
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             
+        }
+
+        private void ScrollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+            ScrollOffset = (int)PanelScroll.Value;
+            refleshScheduleArea();
         }
     }
 }

@@ -21,7 +21,7 @@
         <ComboBox x:Name="end_h" HorizontalAlignment="Left" Height="22" Margin="190,138,0,0" VerticalAlignment="Top" Width="53"/>
         <ComboBox x:Name="end_m" HorizontalAlignment="Left" Height="21" Margin="271,139,0,0" VerticalAlignment="Top" Width="53"/>
         <Label Content="：" HorizontalAlignment="Left" Margin="249,138,0,0" VerticalAlignment="Top"/>
-        <Button Content="予定の追加" HorizontalAlignment="Left" Height="59" Margin="18,348,0,0" VerticalAlignment="Top" Width="216" Click="Button_Click"/>
+        <Button Content="予定の追加" HorizontalAlignment="Left" Height="59" Margin="18,348,0,0" VerticalAlignment="Top" Width="216" Click="Button_add_Click"/>
         <Button x:Name="addSc_close" Content="キャンセル" HorizontalAlignment="Left" Height="59" Margin="249,348,0,0" VerticalAlignment="Top" Width="90" Click="addSc_close_Click"/>
         <TextBox x:Name="scheMemo" HorizontalAlignment="Left" Height="96" Margin="18,220,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="321" FontWeight="Bold"/>
         <Label Content="" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
