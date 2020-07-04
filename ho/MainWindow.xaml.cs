@@ -68,6 +68,7 @@ namespace MySchedule
         {
             ScrollOffset = (int)PanelScroll.Value;
 
+
             for (int i = ScrollOffset; i < 24 * 4; i++)
             {
                 //スケジュール枠の更新
@@ -75,9 +76,25 @@ namespace MySchedule
                 contents.Foreground = Brushes.WhiteSmoke;
 
                 contents.Height = 40;
-                contents.Background = null;
+                contents.Width = SchedulePanelBase.ActualWidth;
 
-                TimeHeader.Children.Add(contents);
+                contents.Background = null;
+                contents.HorizontalAlignment = HorizontalAlignment.Stretch;
+                contents.Padding = new Thickness(5,0,0,0);
+
+                //境界線
+                var bd = new Border();
+                bd.Child = contents;
+                bd.BorderThickness = new Thickness(1,1,1,0);
+                bd.Visibility = Visibility.Visible;
+                bd.BorderBrush = Brushes.Gray;
+
+                bd.HorizontalAlignment = HorizontalAlignment.Stretch;
+                bd.VerticalAlignment = VerticalAlignment.Stretch;
+
+
+
+                TimeHeader.Children.Add(bd);
             }
             //contents.Name = $"{i / 4:0}:{i % 4:00}";
 
@@ -90,31 +107,41 @@ namespace MySchedule
         protected void refleshScheduleArea()
         {
             int offset = ScrollOffset;
-            foreach (System.Windows.Controls.Label contents in TimeHeader.Children)
+            foreach (Border bd in TimeHeader.Children)
             {
 
+                var contents = (System.Windows.Controls.Label)bd.Child;
                 if (offset > 24 * 4)
                 {
                     contents.Content = "";
+                    contents.Background = Brushes.Gray;
+                    bd.BorderThickness = new Thickness(0, 0, 0, 0);
+
                     continue;
                 }
 
-                if ((offset % 4 == 0) || (contents == TimeHeader.Children[0]))
+                contents.Background = Brushes.DarkGray;
+                if ((offset % 4 == 0) || (bd == TimeHeader.Children[0]))
                 {
                     contents.Content = $"{offset / 4:00}:{(offset % 4)*15:00}";
                     contents.FontWeight = FontWeights.Bold;//太字
+                    bd.BorderThickness = new Thickness(1, 1, 1, 0);
 
                 }
                 else
                 {
                     contents.Content = $"    {(offset % 4) * 15:00}";
                     contents.FontWeight = FontWeights.Normal;
+                    bd.BorderThickness = new Thickness(1, 0, 1, 0);
+                    
                 }
 
                 offset++;
 
+                contents.Width = SchedulePanelBase.ActualWidth;
 
             }
+
 
             //お試しで、スケジュール１つ表示してみる
             System.Windows.Controls.Label scheParts = new System.Windows.Controls.Label();
@@ -122,8 +149,13 @@ namespace MySchedule
             scheParts.Height = 100;
             scheParts.Width = 200;
             scheParts.Visibility = Visibility.Visible;
+            scheParts.Height = 40;
+            scheParts.Background = Brushes.Red;
             scheParts.Name = "CustomPanel";
+            
 
+            MainGrid.Children.Add(scheParts);
+            
 
         }
 
@@ -213,7 +245,7 @@ namespace MySchedule
         /// <param name="e"></param>
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            
+            refleshScheduleArea();
         }
 
         private void ScrollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)

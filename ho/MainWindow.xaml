@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:MySchedule"
         mc:Ignorable="d"
         Title="HocchiSchedule" Height="502.667" Width="700.899" Background="#FF686868" SizeChanged="Window_SizeChanged">
-    <Grid Margin="0,0,2,2">
+    <Grid x:Name="MainGrid" Margin="2,2,2,2">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="193*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="469*"/>
-            
+
             <ColumnDefinition Width="19"/>
             <ColumnDefinition Width="203" MaxWidth="200" MinWidth="200"/>
         </Grid.ColumnDefinitions>
@@ -43,11 +43,12 @@
         <Button Content="修正" HorizontalAlignment="Right" Height="22" Margin="0,202,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
         <Button Content="削除" HorizontalAlignment="Right" Height="24" Margin="0,229,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
         <ScrollBar x:Name="PanelScroll" Margin="0,33,2,0" Width="Auto" Grid.Row="1" Grid.Column="1" Scroll="ScrollBar_Scroll" Maximum="96" SmallChange="1" Value="36" Cursor="Cross"/>
+        <Rectangle x:Name="SchedulePanelBase" Margin="2,33,0,0" Grid.Row="1"/>
         <DockPanel x:Name="SchedulePanel" LastChildFill="False" Background="{DynamicResource GlyphBrush}" Margin="2,33,0,0" Grid.Row="1" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="TimeHeader" Width="407" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True"/>
+            <StackPanel x:Name="TimeHeader" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True" Panel.ZIndex="5"/>
         </DockPanel>
-        <Border BorderBrush="#FFF30000" BorderThickness="1" Height="169" Margin="58,100,56,0" VerticalAlignment="Top" Grid.Row="1">
-            <Label Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000" Margin="0,0,33,0"/>
+        <Border x:Name="BD1" BorderBrush="#FFF30000" BorderThickness="0,1,1,0" Height="169" Margin="58,100,56,0" VerticalAlignment="Top" Grid.Row="1">
+            <Label x:Name="BD1DAT" Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000" Padding="0,0,5,5" Margin="0,0,33,0"/>
         </Border>
         <Border BorderBrush="#FFF30000" BorderThickness="1" Height="60" Margin="58,370,35,0" VerticalAlignment="Top" Grid.Row="1">
             <Label Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000" Margin="-1,-1,32,1"/>

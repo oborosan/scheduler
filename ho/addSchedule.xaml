@@ -27,7 +27,9 @@
         <Label Content="" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
         <Label Content="メモ" HorizontalAlignment="Left" Margin="10,194,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="chk_allTime" Content="終日" HorizontalAlignment="Left" Margin="280,173,0,0" VerticalAlignment="Top" Checked="chk_allTime_Checked" Unchecked="chk_allTime_Checked"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="31" Margin="10,2,0,0" VerticalAlignment="Top" Width="336"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="31" Margin="10,2,0,0" VerticalAlignment="Top" Width="336">
+            <Border BorderBrush="Black" BorderThickness="1"/>
+        </Border>
 
     </Grid>
 </Window>
