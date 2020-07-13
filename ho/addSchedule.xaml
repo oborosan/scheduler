@@ -14,12 +14,12 @@
         <TextBox x:Name="ScheName" HorizontalAlignment="Left" Height="24" Margin="18,69,0,0" TextWrapping="Wrap" Text="無題の予定" VerticalAlignment="Top" Width="321"/>
         <Label x:Name="DateLabel" Content="〇月×日(月)" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Width="329" FontWeight="Bold" FontSize="14"/>
         <Label Content="：" HorizontalAlignment="Left" Margin="71,138,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="begin_h" HorizontalAlignment="Left" Margin="18,138,0,0" VerticalAlignment="Top" Width="53"/>
+        <ComboBox x:Name="begin_h" HorizontalAlignment="Left" Margin="18,138,0,0" VerticalAlignment="Top" Width="53" DropDownClosed="time_DropDownClosed"/>
         <Label Content="時間" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="begin_m" HorizontalAlignment="Left" Height="21" Margin="93,139,0,0" VerticalAlignment="Top" Width="53"/>
+        <ComboBox x:Name="begin_m" HorizontalAlignment="Left" Height="21" Margin="93,139,0,0" VerticalAlignment="Top" Width="53" DropDownClosed="time_DropDownClosed"/>
         <Label Content="~" HorizontalAlignment="Left" Margin="151,131,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <ComboBox x:Name="end_h" HorizontalAlignment="Left" Height="22" Margin="190,138,0,0" VerticalAlignment="Top" Width="53"/>
-        <ComboBox x:Name="end_m" HorizontalAlignment="Left" Height="21" Margin="271,139,0,0" VerticalAlignment="Top" Width="53"/>
+        <ComboBox x:Name="end_h" HorizontalAlignment="Left" Height="22" Margin="190,138,0,0" VerticalAlignment="Top" Width="53" DropDownClosed="time_DropDownClosed"/>
+        <ComboBox x:Name="end_m" HorizontalAlignment="Left" Height="21" Margin="271,139,0,0" VerticalAlignment="Top" Width="53" DropDownClosed="time_DropDownClosed"/>
         <Label Content="：" HorizontalAlignment="Left" Margin="249,138,0,0" VerticalAlignment="Top"/>
         <Button Content="予定の追加" HorizontalAlignment="Left" Height="59" Margin="18,348,0,0" VerticalAlignment="Top" Width="216" Click="Button_add_Click"/>
         <Button x:Name="addSc_close" Content="キャンセル" HorizontalAlignment="Left" Height="59" Margin="249,348,0,0" VerticalAlignment="Top" Width="90" Click="addSc_close_Click"/>
@@ -30,6 +30,7 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="31" Margin="10,2,0,0" VerticalAlignment="Top" Width="336">
             <Border BorderBrush="Black" BorderThickness="1"/>
         </Border>
+        <Label x:Name="Label_Span" Content="●●:××" HorizontalAlignment="Left" Margin="49,113,0,0" VerticalAlignment="Top" Width="64"/>
 
     </Grid>
 </Window>

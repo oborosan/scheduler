@@ -75,6 +75,10 @@ namespace MySchedule
 
             chk_allTime.IsChecked = ScheculeData.AllTime;
 
+            //合計時間を更新
+            TimeSpan delta = ScheculeData.Ends - ScheculeData.Begins;
+            Label_Span.Content = delta.ToString();
+
         }
 
         private void addSc_close_Click(object sender, RoutedEventArgs e)
@@ -89,6 +93,7 @@ namespace MySchedule
             owner.createSchecule(ScheculeData);
 
             this.Close();
+            owner.refleshScheduleArea();
         }
 
         /// <summary>
@@ -108,5 +113,20 @@ namespace MySchedule
         }
 
 
+        /// <summary>
+        /// 時刻の変更
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void time_DropDownClosed(object sender, EventArgs e)
+        {
+            ScheculeData.Begins = new DateTime(ScheculeData.Begins.Year, ScheculeData.Begins.Month, ScheculeData.Begins.Day, begin_h.SelectedIndex, begin_m.SelectedIndex * 15, 0);
+
+            ScheculeData.Ends = new DateTime(ScheculeData.Ends.Year, ScheculeData.Ends.Month, ScheculeData.Ends.Day, end_h.SelectedIndex, end_m.SelectedIndex * 15, 0);
+
+            //合計時間を更新
+            TimeSpan delta = ScheculeData.Ends - ScheculeData.Begins;
+            Label_Span.Content = delta.ToString();
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySchedule"
         mc:Ignorable="d"
-        Title="HocchiSchedule" Height="502.667" Width="700.899" Background="#FF686868" SizeChanged="Window_SizeChanged">
+        Title="HocchiSchedule" Height="502.667" Width="700.899" Background="#FF686868" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
     <Grid x:Name="MainGrid" Margin="2,2,2,2">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -17,43 +17,39 @@
             <ColumnDefinition Width="19"/>
             <ColumnDefinition Width="203" MaxWidth="200" MinWidth="200"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="label_nowDate" Content="2020年 12月 31日" Margin="46,0,0,0" FontWeight="Bold" FontSize="18" FontFamily="Microsoft JhengHei" Foreground="White" HorizontalAlignment="Left" Width="156" Grid.RowSpan="2" Height="30" VerticalAlignment="Top" MouseDown="label_nowDate_MouseDown"/>
-        <Label x:Name="btn_dayBack" Content="▼" Margin="21,0,0,0" FontSize="16" RenderTransformOrigin="-0.218,0.483" Background="{x:Null}" Foreground="White" Grid.Row="1" HorizontalAlignment="Left" Width="26" Height="30" VerticalAlignment="Top" MouseDown="btn_dayBack_MouseDown">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="90"/>
-                    <TranslateTransform X="19.008" Y="-18.328"/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="btn_dayNext" Content="▼" Margin="201,0,0,0" FontSize="16" RenderTransformOrigin="0.5,0.5" Background="{x:Null}" Foreground="White" Grid.Row="1" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="26" MouseUp="btn_dayNext_MouseUp">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="270"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
         <Calendar x:Name="MyCalendar" Grid.Column="2" Margin="0,8,0,0" HorizontalAlignment="Right" Width="190" Initialized="MyCalendar_Initialized" FirstDayOfWeek="Monday" ForceCursor="True" Height="176" VerticalAlignment="Top" Grid.Row="1" SelectedDatesChanged="MyCalendar_SelectedDatesChanged"/>
         <Button x:Name="btn_AddSchedule" Content="予定の作成" HorizontalAlignment="Right" Margin="0,174,10,0" Width="172" Click="Button_Click" Grid.Column="2" Height="22" VerticalAlignment="Top" Grid.Row="1"/>
         <Button Content="修正" HorizontalAlignment="Right" Height="22" Margin="0,202,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
         <Button Content="削除" HorizontalAlignment="Right" Height="24" Margin="0,229,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
         <ScrollBar x:Name="PanelScroll" Margin="0,33,2,0" Width="Auto" Grid.Row="1" Grid.Column="1" Scroll="ScrollBar_Scroll" Maximum="96" SmallChange="1" Value="36" Cursor="Cross"/>
-        <Rectangle x:Name="SchedulePanelBase" Margin="2,33,0,0" Grid.Row="1"/>
-        <DockPanel x:Name="SchedulePanel" LastChildFill="False" Background="{DynamicResource GlyphBrush}" Margin="2,33,0,0" Grid.Row="1" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <DockPanel x:Name="SchedulePanelBase" Margin="53,33,0,0" Grid.Row="1" MouseWheel="SchedulePanel_MouseWheel" ScrollViewer.VerticalScrollBarVisibility="Auto" AutomationProperties.IsOffscreenBehavior="Offscreen" Background="#FFCBCBCB"/>
+        <DockPanel x:Name="SchedulePanel" LastChildFill="False" Background="{DynamicResource GlyphBrush}" Margin="2,33,0,0" Grid.Row="1" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseWheel="SchedulePanel_MouseWheel" HorizontalAlignment="Left" Width="51">
             <StackPanel x:Name="TimeHeader" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True" Panel.ZIndex="5"/>
         </DockPanel>
-        <Border x:Name="BD1" BorderBrush="#FFF30000" BorderThickness="0,1,1,0" Height="169" Margin="58,100,56,0" VerticalAlignment="Top" Grid.Row="1">
-            <Label x:Name="BD1DAT" Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000" Padding="0,0,5,5" Margin="0,0,33,0"/>
-        </Border>
-        <Border BorderBrush="#FFF30000" BorderThickness="1" Height="60" Margin="58,370,35,0" VerticalAlignment="Top" Grid.Row="1">
-            <Label Content="●●の予定" Background="#FF8AA6D8" BorderBrush="#FFC70000" Margin="-1,-1,32,1"/>
-        </Border>
         <Button x:Name="btn_save" Content="保存" Grid.Column="2" Margin="0,0,99,19" Grid.Row="1" HorizontalAlignment="Right" Width="83" Height="27" VerticalAlignment="Bottom"/>
         <Button x:Name="btn_load" Content="読み込み" Grid.Column="2" Margin="0,0,10,19" Grid.Row="1" HorizontalAlignment="Right" Width="84" Height="27" VerticalAlignment="Bottom"/>
+        <DockPanel x:Name="TodayView" Grid.RowSpan="2" Background="#FF505768" Grid.ColumnSpan="2" Height="35" VerticalAlignment="Top">
+            <Label x:Name="label_nowDate" Content="2020年 12月 31日" FontWeight="Bold" FontSize="18" FontFamily="Microsoft JhengHei" Foreground="White" HorizontalAlignment="Left" Width="156" Height="30" VerticalAlignment="Top" MouseDown="label_nowDate_MouseDown"/>
+            <Label x:Name="btn_dayBack" Content="▼" Margin="0,2,0,0" FontSize="16" RenderTransformOrigin="-0.218,0.483" Background="{x:Null}" Foreground="White" HorizontalAlignment="Left" Width="26" Height="30" VerticalAlignment="Top" MouseDown="btn_dayBack_MouseDown">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform X="19.008" Y="-18.328"/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Label x:Name="btn_dayNext" Content="▼" Margin="0,2,0,0" FontSize="16" RenderTransformOrigin="0.5,0.5" Background="{x:Null}" Foreground="White" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="26" MouseUp="btn_dayNext_MouseUp">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="270"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+        </DockPanel>
     </Grid>
 </Window>
