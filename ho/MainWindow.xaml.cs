@@ -32,6 +32,12 @@ namespace MySchedule
         protected DateTime NowSelectDay;
 
         /// <summary>
+        /// 選択中のスケジュール
+        /// </summary>
+        protected Schedule selecteSchedule = null;
+        protected bool selecteScheduleChanged = false;
+
+        /// <summary>
         /// スクロール量
         /// </summary>
         int ScrollOffset = 0;
@@ -182,23 +188,22 @@ namespace MySchedule
             {
                 var list1 =
                     from p in db
-                    where p.Begins.Year == MyCalendar.SelectedDate.Value.Year
-                    where p.Begins.Month == MyCalendar.SelectedDate.Value.Month
-                    where p.Begins.Date == MyCalendar.SelectedDate.Value.Date
+                    where (p.Begins.Year == MyCalendar.SelectedDate.Value.Year)&&(p.Begins.Month == MyCalendar.SelectedDate.Value.Month)&&(p.Begins.Date == MyCalendar.SelectedDate.Value.Date)
                      //orderby p.id
                     select (Schedule)p;
 
+                int a = list1.Count();
                 if (list1.Count() != 0)
                 {
                     foreach (Schedule data in list1) { CreateScheculeView(data); }
                 }
+
             }
-                
         }
-            //MainGrid.Children.Add(scheParts);
+        //MainGrid.Children.Add(scheParts);
 
 
-        
+
 
         /// <summary>
         /// スケジュールエリアの描画オブジェクトを生成
@@ -212,13 +217,13 @@ namespace MySchedule
             long deltaOffset = (Sche.Begins.Hour * 4) + (Sche.Begins.Minute / 15) - ScrollOffset;
 
             //もし上がはみ出す場合
-            if(deltaOffset　< 0)
+            if (deltaOffset < 0)
             {
                 deltaSize += deltaOffset;
                 deltaOffset = 0;
 
                 //その結果表示しなくてもよくなった場合
-                if (deltaSize < 0)
+                if (deltaSize <= 0)
                     return;
             }
 
@@ -226,14 +231,20 @@ namespace MySchedule
 
             System.Windows.Controls.Label scheParts = new System.Windows.Controls.Label
             {
-                Content = Sche.Title,
+                Content = Sche.Title + "\n(" + Sche.Begins.ToShortTimeString() + "～" + Sche.Ends.ToShortTimeString() + ")",
                 Name = "HocchiPanel",
                 Height = deltaSize * ScheduleHeight,
-//              Width = 200,
-                Visibility = Visibility.Visible,
-                Background = Brushes.Beige,
-
+                //              Width = 200,
+                Visibility = Visibility.Visible
             };
+
+            if (Sche.Memo != "") {
+                ToolTip = Sche.Memo;
+            }
+
+            scheParts.MouseDown += SchedulePanel_MouseDown;
+            scheParts.MouseDoubleClick += SchedulePanel_MouseDoubleClick;
+
 
 
             Border Bdr = new Border();
@@ -242,6 +253,19 @@ namespace MySchedule
             Bdr.BorderThickness = new Thickness(1);
             Bdr.Margin = new Thickness(0, deltaOffset* ScheduleHeight, 0, 0);
             Bdr.VerticalAlignment = VerticalAlignment.Top;
+
+
+            //選択中のスケジュールなら
+            if (selecteSchedule == Sche)
+            {
+                scheParts.Background = Brushes.Crimson;
+                Bdr.BorderBrush = Brushes.Indigo;
+            }
+            else
+            {
+                scheParts.Background = Brushes.Beige;
+                Bdr.BorderBrush = Brushes.Red;
+            }
 
 
             SchedulePanelBase.Children.Add(Bdr);
@@ -256,7 +280,14 @@ namespace MySchedule
         /// <param name="schedule"></param>
         public void createSchecule(Schedule schedule)
         {
-            db.Add(schedule);
+            if (db.FindIndex(x => x == schedule) == -1)
+            {
+                db.Add(schedule);
+            }
+            selecteSchedule = schedule;
+            btn_edit.IsEnabled = true;
+            btn_delete.IsEnabled = true;
+
         }
 
 
@@ -272,13 +303,47 @@ namespace MySchedule
             var calSelect = MyCalendar.SelectedDate;
             var begin = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 9, 15, 0);
             var end = new DateTime(calSelect.Value.Year, calSelect.Value.Month, calSelect.Value.Day, 15, 30, 0);
-            var window = new addSchedule(new Schedule("無題の予定", begin, end, false, "めもも"));
+            var window = new addSchedule(new Schedule("無題の予定", begin, end, false, ""), "スケジュールの作成");
             window.Owner = this; //オーナーを設定してやることで、戻り値を受ける
 
             //表示！
             window.ShowDialog();
         }
 
+
+        /// <summary>
+        /// 編集ボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_edit_Click(object sender, RoutedEventArgs e)
+        {
+            if (selecteSchedule != null)
+            {
+                var window = new addSchedule(selecteSchedule, "スケジュールの編集");
+                window.Owner = this; //オーナーを設定してやることで、戻り値を受ける
+
+                //表示！
+                window.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// 削除ボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (selecteSchedule != null)
+            {
+                db.Remove(selecteSchedule);
+                selecteSchedule = null;
+                btn_edit.IsEnabled = false;
+                btn_delete.IsEnabled = false;
+                refleshScheduleArea();
+            }
+        }
 
         //----カレンダー関連-------------------------------------------------------------------------
 
@@ -290,25 +355,43 @@ namespace MySchedule
         private void MyCalendar_Initialized(object sender, EventArgs e)
         {
             MyCalendar.SelectedDate = DateTime.Now;
+
         }
 
         private void btn_dayBack_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            selecteSchedule = null;
+            btn_edit.IsEnabled = false;
+            btn_delete.IsEnabled = false;
+
             initDate(NowSelectDay.AddDays(-1));
         }
 
         private void btn_dayNext_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            selecteSchedule = null;
+            btn_edit.IsEnabled = false;
+            btn_delete.IsEnabled = false;
+
             initDate(NowSelectDay.AddDays(1));
         }
 
         private void label_nowDate_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            selecteSchedule = null;
+            btn_edit.IsEnabled = false;
+            btn_delete.IsEnabled = false;
+
             initDate(DateTime.Today);
         }
 
         private void MyCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (btn_edit != null) { 
+               selecteSchedule = null;
+                btn_edit.IsEnabled = false;
+                btn_delete.IsEnabled = false;
+            }
             initDate(MyCalendar.SelectedDate);
         }
 
@@ -375,7 +458,56 @@ namespace MySchedule
             }
             PanelScroll.Value = ScrollOffset;
             refleshScheduleArea();
+
         }
 
+        /// <summary>
+        /// スケジュールクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SchedulePanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var o = (System.Windows.Controls.Label)sender;
+            selecteSchedule = (Schedule)o.Tag;
+            selecteScheduleChanged = true;
+            btn_edit.IsEnabled = true;
+            btn_delete.IsEnabled = true;
+            refleshScheduleArea();
+        }
+
+        /// <summary>
+        /// スケジュールエリアのクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SchedulePanelBase_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (selecteScheduleChanged == false)
+            {
+                selecteSchedule = null;
+                btn_edit.IsEnabled = false;
+                btn_delete.IsEnabled = false;
+                refleshScheduleArea();
+            }
+            selecteScheduleChanged = false;
+        }
+
+        /// <summary>
+        /// スケジュールエリアのダブルクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SchedulePanel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (selecteSchedule != null)
+            {
+                var window = new addSchedule(selecteSchedule, "スケジュールの編集");
+                window.Owner = this; //オーナーを設定してやることで、戻り値を受ける
+
+                //表示！
+                window.ShowDialog();
+            }
+        }
     }
 }

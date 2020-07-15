@@ -10,6 +10,9 @@ namespace MyScheduleData
 
     public class Schedule
     {
+        //識別子
+        public string dataLabel = "";
+
         public string Title = "無題";
 
         /// <summary>

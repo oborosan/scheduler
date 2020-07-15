@@ -19,10 +19,10 @@
         </Grid.ColumnDefinitions>
         <Calendar x:Name="MyCalendar" Grid.Column="2" Margin="0,8,0,0" HorizontalAlignment="Right" Width="190" Initialized="MyCalendar_Initialized" FirstDayOfWeek="Monday" ForceCursor="True" Height="176" VerticalAlignment="Top" Grid.Row="1" SelectedDatesChanged="MyCalendar_SelectedDatesChanged"/>
         <Button x:Name="btn_AddSchedule" Content="予定の作成" HorizontalAlignment="Right" Margin="0,174,10,0" Width="172" Click="Button_Click" Grid.Column="2" Height="22" VerticalAlignment="Top" Grid.Row="1"/>
-        <Button Content="修正" HorizontalAlignment="Right" Height="22" Margin="0,202,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
-        <Button Content="削除" HorizontalAlignment="Right" Height="24" Margin="0,229,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1"/>
+        <Button x:Name="btn_edit" Content="修正" HorizontalAlignment="Right" Height="22" Margin="0,202,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1" IsEnabled="False" Click="btn_edit_Click"/>
+        <Button x:Name="btn_delete" Content="削除" HorizontalAlignment="Right" Height="24" Margin="0,229,10,0" VerticalAlignment="Top" Width="172" Grid.Column="2" Grid.Row="1" IsEnabled="False" Click="btn_delete_Click"/>
         <ScrollBar x:Name="PanelScroll" Margin="0,33,2,0" Width="Auto" Grid.Row="1" Grid.Column="1" Scroll="ScrollBar_Scroll" Maximum="96" SmallChange="1" Value="36" Cursor="Cross"/>
-        <DockPanel x:Name="SchedulePanelBase" Margin="53,33,0,0" Grid.Row="1" MouseWheel="SchedulePanel_MouseWheel" ScrollViewer.VerticalScrollBarVisibility="Auto" AutomationProperties.IsOffscreenBehavior="Offscreen" Background="#FFCBCBCB"/>
+        <DockPanel x:Name="SchedulePanelBase" Margin="53,33,0,0" Grid.Row="1" MouseWheel="SchedulePanel_MouseWheel" ScrollViewer.VerticalScrollBarVisibility="Auto" AutomationProperties.IsOffscreenBehavior="Offscreen" Background="#FFCBCBCB" MouseDown="SchedulePanelBase_MouseDown"/>
         <DockPanel x:Name="SchedulePanel" LastChildFill="False" Background="{DynamicResource GlyphBrush}" Margin="2,33,0,0" Grid.Row="1" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseWheel="SchedulePanel_MouseWheel" HorizontalAlignment="Left" Width="51">
             <StackPanel x:Name="TimeHeader" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True" Panel.ZIndex="5"/>
         </DockPanel>
